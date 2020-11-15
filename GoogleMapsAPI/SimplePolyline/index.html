@@ -75,9 +75,170 @@
       let map;
 
 
-      // This example creates a 2-pixel-wide red polyline showing the path of
-      // the first trans-Pacific flight between Oakland, CA, and Brisbane,
-      // Australia which was made by Charles Kingsford Smith.
+      const stations = {
+        demachiyanagi: {
+          center: { lat: 35.0304996, lng: 135.7710343 },
+          rad: 0.1,
+        },
+        sanjou: {
+          center: { lat: 35.0086531, lng: 135.7704892 },
+          rad: 0.1,
+        },
+        gionshijou: {
+          center: { lat: 35.0039708, lng: 135.7698989 },
+          rad: 0.1,
+        },
+        shichijou: {
+          center: { lat: 34.9898138, lng: 135.7656772 },
+          rad: 0.1,
+        },
+        toufukuji: {
+          center: { lat: 34.981384, lng: 135.767387 },
+          rad: 0.1,
+        },
+        tobakaidou: {
+          center: { lat: 34.9739368, lng: 135.767855 },
+          rad: 0.1,
+        },
+        fushimi_inari: {
+          center: { lat: 34.9687541, lng: 135.7670148 },
+          rad: 0.1,
+        },
+        ryukokudai_mae_fukakusa: {
+          center: { lat: 34.9644418, lng: 135.7678602 },
+          rad: 0.1,
+        },
+        fujinomori: {
+          center: { lat: 34.9568812, lng: 135.7680831 },
+          rad: 0.1,
+        },
+        sumizome: {
+          center: { lat: 34.9482779, lng: 135.7668548 },
+          rad: 0.1,
+        },
+        tambabashi: {
+          center: { lat: 34.938822, lng: 135.7632089 },
+          rad: 0.1,
+        },
+        fushimi_momoyama: {
+          center: { lat: 34.932622, lng: 135.7621069 },
+          rad: 0.1,
+        },
+        chuushojima: {
+          center: { lat: 34.9266954, lng: 135.7579805 },
+          rad: 0.1,
+        },
+        yodo: {
+          center: { lat: 34.9064864, lng: 135.719047 },
+          rad: 0.1,
+        },
+        iwashimizu_hachimangu: {
+          center: { lat: 34.8844403, lng: 135.6981683 },
+          rad: 0.1,
+        },
+        hashimoto: {
+          center: { lat: 34.8819492, lng: 135.6820095 },
+          rad: 0.1,
+        },
+        kuzuha: {
+          center: { lat: 34.861979, lng: 135.6731776 },
+          rad: 0.1,
+        },
+        makino: {
+          center: { lat: 34.843886, lng: 135.6633923 },
+          rad: 0.1,
+        },
+        goten_yama: {
+          center: { lat: 34.8293711, lng: 135.6519584 },
+          rad: 0.1,
+        },
+        hirakatashi: {
+          center: { lat: 34.8160589, lng: 135.6463794 },
+          rad: 0.1,
+        },
+        hirakata_kouen: {
+          center: { lat: 34.8113813, lng: 135.6371732 },
+          rad: 0.1,
+        },
+        kozenji: {
+          center: { lat: 34.797569, lng: 135.6256946 },
+          rad: 0.1,
+        },
+        korien: {
+          center: { lat: 34.7846267, lng: 135.628784 },
+          rad: 0.1,
+        },
+        neyagawashi: {
+          center: { lat: 34.7639498, lng: 135.6185288 },
+          rad: 0.1,
+        },
+        kayashima: {
+          center: { lat: 34.7474006, lng: 135.6090278 },
+          rad: 0.1,
+        },
+        oowada: {
+          center: { lat: 34.7428587, lng: 135.6005464 },
+          rad: 0.1,
+        },
+        furukawabashi: {
+          center: { lat: 34.7398389, lng: 135.5892268 },
+          rad: 0.1,
+        },
+        kadomashi: {
+          center: { lat: 34.7380461, lng: 135.580734 },
+          rad: 0.1,
+        },
+        nishisansou: {
+          center: { lat: 34.7374305, lng: 135.5735231 },
+          rad: 0.1,
+        },
+        moriguchishi: {
+          center: { lat: 34.7351803, lng: 135.5628462 },
+          rad: 0.1,
+        },
+        doi: {
+          center: { lat: 34.7307573, lng: 135.5579644 },
+          rad: 0.1,
+        },
+        takii: {
+          center: { lat: 34.7277868, lng: 135.5551314 },
+          rad: 0.1,
+        },
+        senbayashi: {
+          center: { lat: 34.7243486, lng: 135.5526776 },
+          rad: 0.1,
+        },
+        morishouji: {
+          center: { lat: 34.7194481, lng: 135.5494258 },
+          rad: 0.1,
+        },
+        sekime: {
+          center: { lat: 34.712671, lng: 135.5448455 },
+          rad: 0.1,
+        },
+        noe: {
+          center: { lat: 34.7071306, lng: 135.5411978 },
+          rad: 0.1,
+        },
+        kyoubashi: {
+          center: { lat: 34.6966897, lng: 135.5317181 },
+          rad: 0.1,
+        },
+        tenmabashi: {
+          center: { lat: 34.6889916, lng: 135.5086013 },
+          rad: 0.1,
+        },
+        kitahama: {
+          center: { lat: 34.6905957, lng: 135.5044049 },
+          rad: 0.1,
+        },
+        yodoyabashi: {
+          center: { lat: 34.6924067, lng: 135.4990389 },
+          rad: 0.1,
+        },
+      };
+
+      
       function initMap() {
         map = new google.maps.Map(document.getElementById("map"), {
           zoom: 11,
@@ -134,6 +295,22 @@
           strokeWeight: 2,
         });
         flightPath.setMap(map);
+
+        // Construct the circle for each value in stations.
+        // The scale area of the circle based on the rad.
+        for (const station in stations) {
+          // Add the circle for this station to the map.
+          const stationCircle = new google.maps.Circle({
+            strokeColor: "#FF0000",
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: "#FF0000",
+            fillOpacity: 0.35,
+            map,
+            center: stations[station].center,
+            radius: Math.sqrt(stations[station].rad) * 100,
+          });
+        }
       }
 
       function addLine() {
