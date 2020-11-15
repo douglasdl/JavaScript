@@ -73,182 +73,273 @@
     <script>
       let flightPath;
       let map;
+      let selectedLine;
+      //let trainType = ["futsuu", "kukanKyuukou", "junkyuu", "kyuukou", "kaisokuKyuukou", "tokkyuu", "kaisokuTokkyuu"];
+      //let lineColors = ["#000000", "#019E42", "#006BB9", "#EA550E", "#722489", "#C62B4F", "#EB86B2"]
+
+      const trainType = {
+        0: {
+          line: "futsuu",
+          lineColor: "#000000",
+        },
+        1: {
+          line: "kukanKyuukou",
+          lineColor: "#019E42",
+        },
+        2: {
+          line: "junkyuu",
+          lineColor: "#006BB9",
+        },
+        3: {
+          line: "kyuukou",
+          lineColor: "#EA550E",
+        },
+        4: {
+          line: "kaisokuKyuukou",
+          lineColor: "#722489",
+        },
+        5: {
+          line: "tokkyuu",
+          lineColor: "#C62B4F",
+        },
+        6: {
+          line: "kaisokuTokkyuu",
+          lineColor: "#EB86B2",
+        },
+      };
 
 
       const stations = {
         demachiyanagi: {
           center: { lat: 35.0304996, lng: 135.7710343 },
           rad: 0.1,
+          trainTypes: [ 1, 0, 1, 1, 1, 1, 1 ],
+        },
+        jingu_marutamachi: {
+          center: { lat: 35.0180448, lng: 135.7700545 },
+          rad: 0.1,
+          trainTypes: [ 1, 0, 1, 1, 0, 0, 0 ],
         },
         sanjou: {
           center: { lat: 35.0086531, lng: 135.7704892 },
           rad: 0.1,
+          trainTypes: [ 1, 0, 1, 1, 1, 1, 1 ],
         },
         gionshijou: {
           center: { lat: 35.0039708, lng: 135.7698989 },
           rad: 0.1,
+          trainTypes: [ 1, 0, 1, 1, 1, 1, 1 ],
+        },
+        kiyomizu_gojou: {
+          center: { lat: 34.9959035, lng: 135.7663741 },
+          rad: 0.1,
+          trainTypes: [ 1, 0, 1, 1, 0, 0, 0 ],
         },
         shichijou: {
           center: { lat: 34.9898138, lng: 135.7656772 },
           rad: 0.1,
+          trainTypes: [ 1, 1, 1, 1, 1, 0, 1 ],
         },
         toufukuji: {
           center: { lat: 34.981384, lng: 135.767387 },
           rad: 0.1,
+          trainTypes: [ 1, 0, 1, 0, 0, 0, 0 ],
         },
         tobakaidou: {
           center: { lat: 34.9739368, lng: 135.767855 },
           rad: 0.1,
+          trainTypes: [ 1, 0, 1, 0, 0, 0, 0 ],
         },
         fushimi_inari: {
           center: { lat: 34.9687541, lng: 135.7670148 },
           rad: 0.1,
+          trainTypes: [ 1, 0, 1, 1, 0, 0, 0 ],
         },
         ryukokudai_mae_fukakusa: {
           center: { lat: 34.9644418, lng: 135.7678602 },
           rad: 0.1,
+          trainTypes: [ 1, 0, 1, 0, 0, 0, 0 ],
         },
         fujinomori: {
           center: { lat: 34.9568812, lng: 135.7680831 },
           rad: 0.1,
+          trainTypes: [ 1, 0, 1, 0, 0, 0, 0 ],
         },
         sumizome: {
           center: { lat: 34.9482779, lng: 135.7668548 },
           rad: 0.1,
+          trainTypes: [ 1, 0, 1, 0, 0, 0, 0 ],
         },
         tambabashi: {
           center: { lat: 34.938822, lng: 135.7632089 },
           rad: 0.1,
+          trainTypes: [ 1, 0, 1, 1, 1, 1, 0 ],
         },
         fushimi_momoyama: {
           center: { lat: 34.932622, lng: 135.7621069 },
           rad: 0.1,
+          trainTypes: [ 1, 0, 1, 0, 0, 0, 0 ],
         },
         chuushojima: {
           center: { lat: 34.9266954, lng: 135.7579805 },
           rad: 0.1,
+          trainTypes: [ 1, 0, 1, 1, 1, 1, 0 ],
         },
         yodo: {
           center: { lat: 34.9064864, lng: 135.719047 },
           rad: 0.1,
+          trainTypes: [ 1, 0, 1, 1, 0, 0, 0 ],
         },
         iwashimizu_hachimangu: {
           center: { lat: 34.8844403, lng: 135.6981683 },
           rad: 0.1,
+          trainTypes: [ 1, 0, 1, 1, 0, 0, 0 ],
         },
         hashimoto: {
           center: { lat: 34.8819492, lng: 135.6820095 },
           rad: 0.1,
+          trainTypes: [ 1, 0, 1, 0, 0, 0, 0 ],
         },
         kuzuha: {
           center: { lat: 34.861979, lng: 135.6731776 },
           rad: 0.1,
+          trainTypes: [ 1, 1, 1, 1, 1, 1, 0 ],
         },
         makino: {
           center: { lat: 34.843886, lng: 135.6633923 },
           rad: 0.1,
+          trainTypes: [ 1, 1, 1, 0, 0, 0, 0 ],
         },
         goten_yama: {
           center: { lat: 34.8293711, lng: 135.6519584 },
           rad: 0.1,
+          trainTypes: [ 1, 1, 1, 0, 0, 0, 0 ],
         },
         hirakatashi: {
           center: { lat: 34.8160589, lng: 135.6463794 },
           rad: 0.1,
+          trainTypes: [ 1, 1, 1, 1, 1, 1, 0 ],
         },
         hirakata_kouen: {
           center: { lat: 34.8113813, lng: 135.6371732 },
           rad: 0.1,
+          trainTypes: [ 1, 1, 1, 1, 0, 0, 0 ],
         },
         kozenji: {
           center: { lat: 34.797569, lng: 135.6256946 },
           rad: 0.1,
+          trainTypes: [ 1, 1, 1, 0, 0, 0, 0 ],
         },
         korien: {
           center: { lat: 34.7846267, lng: 135.628784 },
           rad: 0.1,
+          trainTypes: [ 1, 1, 1, 1, 1, 0, 0 ],
         },
         neyagawashi: {
           center: { lat: 34.7639498, lng: 135.6185288 },
           rad: 0.1,
+          trainTypes: [ 1, 1, 1, 1, 1, 0, 0 ],
         },
         kayashima: {
           center: { lat: 34.7474006, lng: 135.6090278 },
           rad: 0.1,
+          trainTypes: [ 1, 1, 1, 0, 0, 0, 0 ],
         },
         oowada: {
           center: { lat: 34.7428587, lng: 135.6005464 },
           rad: 0.1,
+          trainTypes: [ 1, 1, 0, 0, 0, 0, 0 ],
         },
         furukawabashi: {
           center: { lat: 34.7398389, lng: 135.5892268 },
           rad: 0.1,
+          trainTypes: [ 1, 1, 0, 0, 0, 0, 0 ],
         },
         kadomashi: {
           center: { lat: 34.7380461, lng: 135.580734 },
           rad: 0.1,
+          trainTypes: [ 1, 1, 0, 0, 0, 0, 0 ],
         },
         nishisansou: {
           center: { lat: 34.7374305, lng: 135.5735231 },
           rad: 0.1,
+          trainTypes: [ 1, 1, 0, 0, 0, 0, 0 ],
         },
         moriguchishi: {
           center: { lat: 34.7351803, lng: 135.5628462 },
           rad: 0.1,
+          trainTypes: [ 1, 1, 1, 1, 1, 0, 0 ],
         },
         doi: {
           center: { lat: 34.7307573, lng: 135.5579644 },
           rad: 0.1,
+          trainTypes: [ 1, 0, 0, 0, 0, 0, 0 ],
         },
         takii: {
           center: { lat: 34.7277868, lng: 135.5551314 },
           rad: 0.1,
+          trainTypes: [ 1, 0, 0, 0, 0, 0, 0 ],
         },
         senbayashi: {
           center: { lat: 34.7243486, lng: 135.5526776 },
           rad: 0.1,
+          trainTypes: [ 1, 0, 0, 0, 0, 0, 0 ],
         },
         morishouji: {
           center: { lat: 34.7194481, lng: 135.5494258 },
           rad: 0.1,
+          trainTypes: [ 1, 0, 0, 0, 0, 0, 0 ],
         },
         sekime: {
           center: { lat: 34.712671, lng: 135.5448455 },
           rad: 0.1,
+          trainTypes: [ 1, 0, 0, 0, 0, 0, 0 ],
         },
         noe: {
           center: { lat: 34.7071306, lng: 135.5411978 },
           rad: 0.1,
+          trainTypes: [ 1, 0, 0, 0, 0, 0, 0 ],
         },
         kyoubashi: {
           center: { lat: 34.6966897, lng: 135.5317181 },
           rad: 0.1,
+          trainTypes: [ 1, 1, 1, 1, 1, 1, 1 ],
         },
         tenmabashi: {
           center: { lat: 34.6889916, lng: 135.5086013 },
           rad: 0.1,
+          trainTypes: [ 1, 1, 1, 1, 1, 1, 1 ],
         },
         kitahama: {
           center: { lat: 34.6905957, lng: 135.5044049 },
           rad: 0.1,
+          trainTypes: [ 1, 1, 1, 1, 1, 1, 1 ],
         },
         yodoyabashi: {
           center: { lat: 34.6924067, lng: 135.4990389 },
           rad: 0.1,
+          trainTypes: [ 1, 1, 1, 1, 1, 1, 1 ],
         },
       };
 
-      
+      selectedLine = 1;
+      selectedColor = trainType[selectedLine].lineColor;
       function initMap() {
         map = new google.maps.Map(document.getElementById("map"), {
           zoom: 11,
           center: { lat: 34.8249578, lng: 135.6899856 },
-          mapTypeId: "terrain",
+          // roadmap, satellite, hybrid, terrain
+          mapTypeId: "roadmap",
         });
+        //selectedLine = 0;
+        //let train = 6;
+        //let lineColor = lineColors[6];
         const flightPlanCoordinates = [
           { lat: 35.0304996, lng: 135.7710343 },
+          { lat: 35.0180448, lng: 135.7700545 },
           { lat: 35.0086531, lng: 135.7704892 },
           { lat: 35.0039708, lng: 135.7698989 },
+          { lat: 34.9959035, lng: 135.7663741 },
           { lat: 34.9898138, lng: 135.7656772 },
           { lat: 34.9813840, lng: 135.7673870 },
           { lat: 34.9739368, lng: 135.7678550 },
@@ -290,47 +381,60 @@
         flightPath = new google.maps.Polyline({
           path: flightPlanCoordinates,
           geodesic: true,
-          strokeColor: "#FF0000",
+          strokeColor: selectedColor,
           strokeOpacity: 1.0,
           strokeWeight: 2,
         });
         flightPath.setMap(map);
 
-        // Construct the circle for each value in stations.
-        // The scale area of the circle based on the rad.
-        for (const station in stations) {
-          // Add the circle for this station to the map.
-          const stationCircle = new google.maps.Circle({
-            strokeColor: "#FF0000",
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: "#FF0000",
-            fillOpacity: 0.35,
-            map,
-            center: stations[station].center,
-            radius: Math.sqrt(stations[station].rad) * 100,
-          });
-        }
+        addCircles();
+         
       }
 
-      function addLine() {
+      function addLine(selectedLine) {
         flightPath.setMap(map);
       }
 
       function removeLine() {
         flightPath.setMap(null);
+        removeCircles();
       }
+
+      function addCircles() {
+        // Construct the circle for each value in stations.
+        // The scale area of the circle based on the rad.
+        for (const station in stations) {
+          // Add the circle for this station to the map.
+          if(stations[station].trainTypes[selectedLine] == 1) {
+            const stationCircle = new google.maps.Circle({
+              strokeColor: selectedColor,
+              strokeOpacity: 0.8,
+              strokeWeight: 2,
+              fillColor: selectedColor,
+              fillOpacity: 1,
+              map,
+              center: stations[station].center,
+              radius: Math.sqrt(stations[station].rad) * 100,
+            });
+          }
+        } 
+      }
+
+      function removeCircles() {
+        
+      }
+
     </script>
   </head>
   <body>
     <div id="floating-panel">
-      <input onclick="addLine();" type="button" value="快速特急 洛楽" class="kaisokuTokkyuu" /><br>
-      <input onclick="addLine();" type="button" value="特急" class="tokkyuu" /><br>
-      <input onclick="addLine();" type="button" value="快速急行・通勤快速急" class="kaisokuKyuukou" /><br>
-      <input onclick="addLine();" type="button" value="急行・深夜急行" class="kyuukou" /><br>
-      <input onclick="addLine();" type="button" value="準急・通勤準急" class="junkyuu" /><br>
-      <input onclick="addLine();" type="button" value="区間急行" class="kukanKyuukou" /><br>
-      <input onclick="addLine();" type="button" value="普通" class="futsuu" /><br>
+      <input onclick="addLine(6);" type="button" value="快速特急 洛楽" class="kaisokuTokkyuu" /><br>
+      <input onclick="addLine(5);" type="button" value="特急" class="tokkyuu" /><br>
+      <input onclick="addLine(4);" type="button" value="快速急行・通勤快速急" class="kaisokuKyuukou" /><br>
+      <input onclick="addLine(3);" type="button" value="急行・深夜急行" class="kyuukou" /><br>
+      <input onclick="addLine(2);" type="button" value="準急・通勤準急" class="junkyuu" /><br>
+      <input onclick="addLine(1);" type="button" value="区間急行" class="kukanKyuukou" /><br>
+      <input onclick="addLine(0);" type="button" value="普通" class="futsuu" /><br>
 
       <input onclick="removeLine();" type="button" value="Remove line" /><br>
     </div>
