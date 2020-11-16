@@ -35,6 +35,28 @@
         padding-left: 10px;
       }
 
+      #author {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        z-index: 5;
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: "Roboto", "sans-serif";
+        line-height: 30px;
+        padding-left: 10px;
+      }
+
+      #author a:link {
+        text-decoration: none;
+      }
+
+      #author span {
+        color: #FFFFFF;
+      }
+
       .kaisokuTokkyuu {
         background-color: #EB86B2;
         color: white;
@@ -74,6 +96,8 @@
       let flightPath;
       let map;
       let selectedLine;
+      let stationCircle;
+      let allCircles = [];
       //let trainType = ["futsuu", "kukanKyuukou", "junkyuu", "kyuukou", "kaisokuKyuukou", "tokkyuu", "kaisokuTokkyuu"];
       //let lineColors = ["#000000", "#019E42", "#006BB9", "#EA550E", "#722489", "#C62B4F", "#EB86B2"]
 
@@ -138,7 +162,7 @@
         shichijou: {
           center: { lat: 34.9898138, lng: 135.7656772 },
           rad: 0.1,
-          trainTypes: [ 1, 1, 1, 1, 1, 0, 1 ],
+          trainTypes: [ 1, 0, 1, 1, 1, 0, 1 ],
         },
         toufukuji: {
           center: { lat: 34.981384, lng: 135.767387 },
@@ -322,7 +346,7 @@
         },
       };
 
-      selectedLine = 1;
+      selectedLine = 0;
       selectedColor = trainType[selectedLine].lineColor;
       function initMap() {
         map = new google.maps.Map(document.getElementById("map"), {
@@ -387,12 +411,8 @@
         });
         flightPath.setMap(map);
 
-        addCircles();
+        addCircles(selectedLine);
          
-      }
-
-      function addLine(selectedLine) {
-        flightPath.setMap(map);
       }
 
       function removeLine() {
@@ -400,13 +420,25 @@
         removeCircles();
       }
 
-      function addCircles() {
+      function addLine(selectedLine) {
+        removeLine();
+        flightPath.setMap(null);
+        selectedColor = trainType[selectedLine].lineColor;
+        flightPath.setMap(map);
+        flightPath.strokeColor = selectedColor;
+        addCircles(selectedLine);
+      }
+
+      
+
+      function addCircles(selectedLine = 6) {
+        allCircles.length = 0;
         // Construct the circle for each value in stations.
         // The scale area of the circle based on the rad.
         for (const station in stations) {
           // Add the circle for this station to the map.
           if(stations[station].trainTypes[selectedLine] == 1) {
-            const stationCircle = new google.maps.Circle({
+            stations[station].stationCircle = new google.maps.Circle({
               strokeColor: selectedColor,
               strokeOpacity: 0.8,
               strokeWeight: 2,
@@ -414,29 +446,36 @@
               fillOpacity: 1,
               map,
               center: stations[station].center,
-              radius: Math.sqrt(stations[station].rad) * 100,
+              radius: Math.sqrt(stations[station].rad*50) * 100,
             });
           }
+          allCircles.push(stationCircle);
         } 
       }
 
       function removeCircles() {
-        
+        for (const station in stations) {
+          stations[station].stationCircle.setMap(null);
+        }
       }
 
     </script>
   </head>
   <body>
     <div id="floating-panel">
-      <input onclick="addLine(6);" type="button" value="快速特急 洛楽" class="kaisokuTokkyuu" /><br>
-      <input onclick="addLine(5);" type="button" value="特急" class="tokkyuu" /><br>
-      <input onclick="addLine(4);" type="button" value="快速急行・通勤快速急" class="kaisokuKyuukou" /><br>
-      <input onclick="addLine(3);" type="button" value="急行・深夜急行" class="kyuukou" /><br>
-      <input onclick="addLine(2);" type="button" value="準急・通勤準急" class="junkyuu" /><br>
-      <input onclick="addLine(1);" type="button" value="区間急行" class="kukanKyuukou" /><br>
-      <input onclick="addLine(0);" type="button" value="普通" class="futsuu" /><br>
+      <input onclick="removeLine(); addLine(6);" type="button" value="快速特急 洛楽" class="kaisokuTokkyuu" /><br>
+      <input onclick="removeLine(); addLine(5);" type="button" value="特急" class="tokkyuu" /><br>
+      <input onclick="removeLine(); addLine(4);" type="button" value="快速急行・通勤快速急" class="kaisokuKyuukou" /><br>
+      <input onclick="removeLine(); addLine(3);" type="button" value="急行・深夜急行" class="kyuukou" /><br>
+      <input onclick="removeLine(); addLine(2);" type="button" value="準急・通勤準急" class="junkyuu" /><br>
+      <input onclick="removeLine(); addLine(1);" type="button" value="区間急行" class="kukanKyuukou" /><br>
+      <input onclick="removeLine(); addLine(0);" type="button" value="普通" class="futsuu" /><br>
 
       <input onclick="removeLine();" type="button" value="Remove line" /><br>
+      <input onclick="removeCircles();" type="button" value="Remove circle" /><br>
+    </div>
+    <div id="author">
+      <a href="mailto:douglas_san@hotmail.com"><span>Developed by Douglas Dias Leal</span></a>
     </div>
     <div id="map"></div>
   </body>
