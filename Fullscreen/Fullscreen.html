@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Fullscreen</title>
+</head>
+<body>
+	
+	<button id="goFS" onclick="toggleFullScreen()">Toggle Fullscreen Mode</button>
+
+
+	<script>
+		function toggleFullScreen() {
+		  var doc = window.document;
+		  var docEl = doc.documentElement;
+
+		  var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+		  var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+		  if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+			requestFullScreen.call(docEl);
+		  }
+		  else {
+			cancelFullScreen.call(doc);
+		  }
+		}
+	</script>
+</body>
+</html>
