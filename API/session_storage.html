@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p id="demo"></p>
+
+<script>
+sessionStorage.setItem("name","John Doe");
+document.getElementById("demo").innerHTML = sessionStorage.getItem("name");
+</script>
+
+
+<!--
+Property/Method			Description
+key(n)					Returns the name of the nth key in the storage
+length					Returns the number of data items stored in the Storage object
+getItem(keyname)		Returns the value of the specified key name
+setItem(keyname, value)	Adds that key to the storage, or update that key's value if it already exists
+removeItem(keyname)		Removes that key from the storage
+clear()					Empty all key out of the storage
+-->
+
+
+</body>
+</html>
